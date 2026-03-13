@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Item extends Model
 {
+    protected $table = 'items';
     protected $fillable = [
         'kode',
         'nama',
@@ -17,14 +18,4 @@ class Item extends Model
         'stok',
         'stok_minimum'
     ];
-
-    public function transaksiMasuk()
-    {
-        return $this->hasMany(TransaksiMasuk::class);
-    }
-
-    public function transaksiKeluar()
-    {
-        return $this->hasMany(TransaksiKeluar::class);
-    }
 }
