@@ -36,4 +36,21 @@ class TransaksiMasukController extends Controller
             'data' => $transaksi
         ]);
     }
+
+    public function destroy($id)
+    {
+    $transaksi = TransaksiMasuk::find($id);
+
+        if (!$transaksi) {
+            return response()->json([
+                'message' => 'Transaksi tidak ditemukan'
+            ], 404);
+        }
+
+    $transaksi->delete();
+
+        return response()->json([
+            'message' => 'Transaksi berhasil dihapus'
+        ]);
+    }
 }

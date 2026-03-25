@@ -20,4 +20,18 @@ class TransaksiKeluar extends Model
     {
         return $this->belongsTo(Item::class);
     }
+
+    public function destroy($id)
+    {
+    $transaksi = TransaksiKeluar::find($id);
+        if (!$transaksi) {
+            return response()->json([
+                'message' => 'Transaksi tidak ditemukan'
+            ], 404);
+        }
+    $transaksi->delete();
+        return response()->json([
+            'message' => 'Transaksi berhasil dihapus'
+        ]);
+    }
 }
