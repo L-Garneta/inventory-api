@@ -57,4 +57,9 @@ class TransaksiKeluarController extends Controller
             'message' => 'Transaksi berhasil dihapus'
         ]);
     }
+
+    public function index()
+    {
+        return TransaksiKeluar::all();
+    }
 }

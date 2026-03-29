@@ -14,3 +14,5 @@ Route::get('/dashboard', [DashboardController::class, 'index']);
 Route::delete('/transaksi-masuk/{id}', [TransaksiMasukController::class, 'destroy']);
 Route::delete('/transaksi-keluar/{id}', [TransaksiKeluarController::class, 'destroy']);
 Route::delete('/items/{id}', [ItemController::class, 'destroy']);
+Route::get('/transaksi-masuk', [TransaksiMasukController::class, 'index']);
+Route::get('/transaksi-keluar', [TransaksiKeluarController::class, 'index']);

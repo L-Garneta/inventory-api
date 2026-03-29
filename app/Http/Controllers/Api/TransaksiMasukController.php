@@ -53,4 +53,9 @@ class TransaksiMasukController extends Controller
             'message' => 'Transaksi berhasil dihapus'
         ]);
     }
+
+    public function index()
+    {
+        return TransaksiMasuk::all();
+    }
 }

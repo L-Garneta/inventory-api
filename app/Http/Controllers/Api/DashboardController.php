@@ -10,7 +10,7 @@ use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
-    public function index()
+    /*public function index()
     {
         $bulanIni = Carbon::now()->month;
         $tahunIni = Carbon::now()->year;
@@ -42,5 +42,16 @@ class DashboardController extends Controller
             'bulan' => Carbon::now()->translatedFormat('F Y'),
             'barangKritisList' => $barangKritisList
         ]);
+    }*/
+
+    public function index()
+    {
+        $totalBarang = Item::count();
+        return response()->json([
+            'totalBarang' => 0
+        ]);
+
+        $barangKritis = Item::whereColumn('stok', '<=', 'stok_minimum')->count();
     }
+
 }
