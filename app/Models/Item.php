@@ -14,7 +14,6 @@ class Item extends Model
         'ruangan',
         'satuan',
         'harga_beli',
-        'harga_jual',
         'stok',
         'stok_minimum'
     ];

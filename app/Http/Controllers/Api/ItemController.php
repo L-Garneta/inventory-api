@@ -32,4 +32,26 @@ class ItemController extends Controller
             'message' => 'Item berhasil dihapus'
         ]);
     }
+
+    public function update(Request $request, $id)
+{
+    $item = Item::findOrFail($id);
+
+    $data = $request->validate([
+        'kode' => 'required',
+        'nama' => 'required',
+        'kategori' => 'nullable',
+        'ruangan' => 'nullable',
+        'stok' => 'required|integer',
+        'stok_minimum' => 'required|integer',
+        'satuan' => 'nullable'
+    ]);
+
+    $item->update($data);
+
+    return response()->json([
+        'message' => 'Item berhasil diupdate',
+        'data' => $item
+    ]);
+}
 }

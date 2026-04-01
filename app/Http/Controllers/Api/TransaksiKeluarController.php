@@ -6,11 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Item;
 use App\Models\TransaksiKeluar;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TransaksiKeluarController extends Controller
 {
     public function store(Request $request)
     {
+    return DB::transaction(function () use ($request) {
+
         $request->validate([
             'item_id' => 'required|exists:items,id',
             'tanggal' => 'required|date',
@@ -19,7 +22,6 @@ class TransaksiKeluarController extends Controller
 
         $item = Item::findOrFail($request->item_id);
 
-        // cek stok cukup atau tidak
         if ($item->stok < $request->jumlah) {
             return response()->json([
                 'message' => 'Stok tidak mencukupi'
@@ -34,6 +36,15 @@ class TransaksiKeluarController extends Controller
             'keterangan' => $request->keterangan
         ]);
 
+        $item->stok -= $request->jumlah;
+        $item->save();
+
+        return response()->json([
+            'message' => 'Transaksi keluar berhasil',
+            'data' => $transaksi
+        ]);
+    });
+
         // kurangi stok
         $item->stok -= $request->jumlah;
         $item->save();
@@ -47,15 +58,25 @@ class TransaksiKeluarController extends Controller
     public function destroy($id)
     {
     $transaksi = TransaksiKeluar::find($id);
-        if (!$transaksi) {
-            return response()->json([
-                'message' => 'Transaksi tidak ditemukan'
-            ], 404);
-        }
-    $transaksi->delete();
+
+    if (!$transaksi) {
         return response()->json([
-            'message' => 'Transaksi berhasil dihapus'
-        ]);
+            'message' => 'Transaksi tidak ditemukan'
+        ], 404);
+    }
+
+    // 🔥 BALIKIN STOK
+    $item = Item::find($transaksi->item_id);
+    if ($item) {
+        $item->stok += $transaksi->jumlah;
+        $item->save();
+    }
+
+    $transaksi->delete();
+
+    return response()->json([
+        'message' => 'Transaksi berhasil dihapus'
+    ]);
     }
 
     public function index()
