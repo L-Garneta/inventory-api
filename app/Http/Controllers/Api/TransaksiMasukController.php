@@ -56,6 +56,8 @@ class TransaksiMasukController extends Controller
 
     public function index()
     {
-        return TransaksiMasuk::all();
+        return response()->json(
+            TransaksiMasuk::with('item')->latest()->get()
+        );
     }
 }

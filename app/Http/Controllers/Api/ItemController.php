@@ -15,43 +15,84 @@ class ItemController extends Controller
 
     public function store(Request $request)
     {
-        $item = Item::create($request->all());
-        return response()->json($item);
+        try {
+            $data = $request->validate([
+                'kode' => 'required|unique:items,kode',
+                'nama' => 'required',
+                'kategori' => 'nullable',
+                'ruangan' => 'nullable',
+                'satuan' => 'nullable',
+                'stok' => 'required|integer',
+                'stok_minimum' => 'required|integer',
+                'harga_beli' => 'nullable|numeric',
+                'harga_jual' => 'nullable|numeric'
+            ]);
+
+            $data['harga_beli'] = $data['harga_beli'] ?? 0;
+            $data['harga_jual'] = $data['harga_jual'] ?? 0;
+
+            $item = Item::create($data);
+
+            return response()->json([
+                'message' => 'Item berhasil ditambahkan',
+                'data' => $item
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => 'Error server',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     public function destroy($id)
     {
-    $item = Item::find($id);
+        $item = Item::find($id);
+
         if (!$item) {
             return response()->json([
                 'message' => 'Item tidak ditemukan'
             ], 404);
         }
-    $item->delete();
+
+        $item->delete();
+
         return response()->json([
             'message' => 'Item berhasil dihapus'
         ]);
     }
 
     public function update(Request $request, $id)
-{
-    $item = Item::findOrFail($id);
+    {
+        try {
+            $item = Item::findOrFail($id);
 
-    $data = $request->validate([
-        'kode' => 'required',
-        'nama' => 'required',
-        'kategori' => 'nullable',
-        'ruangan' => 'nullable',
-        'stok' => 'required|integer',
-        'stok_minimum' => 'required|integer',
-        'satuan' => 'nullable'
-    ]);
+            $data = $request->validate([
+                'kode' => 'required',
+                'nama' => 'required',
+                'kategori' => 'nullable',
+                'ruangan' => 'nullable',
+                'satuan' => 'nullable',
+                'stok' => 'required|integer',
+                'stok_minimum' => 'required|integer',
+                'harga_beli' => 'nullable|numeric',
+                'harga_jual' => 'nullable|numeric'
+            ]);
 
-    $item->update($data);
+            $data['harga_beli'] = $data['harga_beli'] ?? 0;
+            $data['harga_jual'] = $data['harga_jual'] ?? 0;
 
-    return response()->json([
-        'message' => 'Item berhasil diupdate',
-        'data' => $item
-    ]);
-}
+            $item->update($data);
+
+            return response()->json([
+                'message' => 'Item berhasil diupdate',
+                'data' => $item
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => 'Error server',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 }
