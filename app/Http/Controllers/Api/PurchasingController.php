@@ -67,10 +67,9 @@ class PurchasingController extends Controller
 
                 // 🔥 CEK biar tidak double insert
                 $exists = TransaksiMasuk::where(
-                    'keterangan',
-                    'like',
-                    '%purchasing ID ' . $purchasing->id . '%'
-                )->exists();
+                    'purchasing_id', 
+                    $purchasing->id)
+                    ->exists();
 
                 if (!$exists) {
 
@@ -82,8 +81,8 @@ class PurchasingController extends Controller
                         'tanggal' => now(),
                         'jumlah' => $purchasing->jumlah,
                         'supplier' => $purchasing->supplier ?? '-',
-                        'keterangan' => 'Dari purchasing ID ' . $purchasing->id,
-                        'status' => 'normal'
+                        'purchasing_id' => $purchasing->id,
+                        'status' => 'pending'
                     ]);
 
                     // ➕ update stok
