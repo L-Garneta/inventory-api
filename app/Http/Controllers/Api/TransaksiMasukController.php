@@ -24,7 +24,7 @@ class TransaksiMasukController extends Controller
             'tanggal' => $request->tanggal,
             'jumlah' => $request->jumlah,
             'supplier' => $request->supplier,
-            'keterangan' => $request->keterangan
+            'status' => 'pending', 
         ]);
 
         // update stok

@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\TransaksiMasukController;
 use App\Http\Controllers\Api\TransaksiKeluarController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\PurchasingController;
+use App\Http\Controllers\Api\InventarisController;
 
 Route::get('/items', [ItemController::class, 'index']);
 Route::post('/items', [ItemController::class, 'store']);
@@ -26,3 +27,9 @@ Route::get('/purchasing', [PurchasingController::class, 'index']);
 Route::post('/purchasing', [PurchasingController::class, 'store']);
 Route::put('/purchasing/{id}', [PurchasingController::class, 'update']);
 Route::delete('/purchasing/{id}', [PurchasingController::class, 'destroy']);
+
+Route::get('/inventaris', [InventarisController::class, 'index']);
+Route::get('/inventaris/pending', [InventarisController::class, 'pending']);
+Route::post('/inventaris/generate', [InventarisController::class, 'generate']);
+Route::put('/inventaris/{id}', [InventarisController::class, 'update']);
+#Route::delete('/inventaris/{id}', [InventarisController::class, 'destroy']);

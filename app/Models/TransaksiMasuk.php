@@ -13,11 +13,17 @@ class TransaksiMasuk extends Model
         'tanggal',
         'jumlah',
         'supplier',
-        'keterangan'
+        'status',
     ];
 
     public function item()
     {
         return $this->belongsTo(Item::class);
     }
+
+    public function inventaris()
+    {
+        return $this->hasMany(Inventaris::class);
+    }
+
 }

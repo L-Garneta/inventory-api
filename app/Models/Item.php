@@ -18,4 +18,10 @@ class Item extends Model
         'stok',
         'stok_minimum'
     ];
+
+    public function inventaris()
+    {
+        return $this->hasMany(Inventaris::class);
+    }
+    
 }

@@ -14,7 +14,7 @@ return new class extends Migration
         $table->date('tanggal');
         $table->integer('jumlah');
         $table->string('supplier')->nullable();
-        $table->text('keterangan')->nullable();
+        $table->enum('status', ['pending', 'completed'])->default('pending');
         $table->timestamps();
     });
 }
