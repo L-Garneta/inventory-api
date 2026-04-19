@@ -8,6 +8,8 @@ use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\PurchasingController;
 use App\Http\Controllers\Api\InventarisController;
 
+use Illuminate\Support\Facades\Artisan;
+
 Route::get('/items', [ItemController::class, 'index']);
 Route::post('/items', [ItemController::class, 'store']);
 Route::delete('/items/{id}', [ItemController::class, 'destroy']);
@@ -33,3 +35,8 @@ Route::get('/inventaris/pending', [InventarisController::class, 'pending']);
 Route::post('/inventaris/generate', [InventarisController::class, 'generate']);
 Route::put('/inventaris/{id}', [InventarisController::class, 'update']);
 #Route::delete('/inventaris/{id}', [InventarisController::class, 'destroy']);
+
+Route::get('/migrate', function () {
+    Artisan::call('migrate');
+    return 'MIGRATE SUCCESS';
+});
