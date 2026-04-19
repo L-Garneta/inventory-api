@@ -30,7 +30,7 @@ class TransaksiKeluarController extends Controller
 
         $transaksi = TransaksiKeluar::create([
             'item_id' => $request->item_id,
-            'tanggal' => $request->tanggal,
+            'tanggal' => $request->tanggal ?? now(),
             'jumlah' => $request->jumlah,
             'penerima' => $request->penerima,
             'keterangan' => $request->keterangan
