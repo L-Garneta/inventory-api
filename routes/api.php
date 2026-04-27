@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\TransaksiKeluarController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\PurchasingController;
 use App\Http\Controllers\Api\InventarisController;
+use App\Http\Controllers\Api\AuthController;
 
 use Illuminate\Support\Facades\Artisan;
 
@@ -39,4 +40,18 @@ Route::put('/inventaris/{id}', [InventarisController::class, 'update']);
 Route::get('/migrate', function () {
     Artisan::call('migrate');
     return 'MIGRATE SUCCESS';
+});
+
+#route middleware
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::middleware('auth:sanctum')->group(function () {
+
+    Route::get('/items', [ItemController::class, 'index']);
+
+    // 🔥 KHUSUS ADMIN
+    Route::middleware('role:admin')->group(function () {
+        Route::delete('/items/{id}', [ItemController::class, 'destroy']);
+    });
+
 });
